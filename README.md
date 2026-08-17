@@ -5,5 +5,5 @@ To ensure quality learning, participants in MavTutor can rate and write reviews 
 
 Instructions on how to run:
 1. Go to src directory within MavTutor
-2. To Compile type: javac \*/\*.java
+2. To Compile type: javac \*/\*.java  <!-- (Backslashes on the two astris's are there for the corrected README displayed on GitHub) -->
 3. To Run type: java mdi.MavTutor
