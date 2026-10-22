@@ -44,7 +44,7 @@ skinparam classAttributeIconSize 0
 hide circle
 
 package rating {
-class Comment #bfbfbf {
+class Comment {
  - text : String
  - author : Person
  - inReplyTo : Comment
@@ -58,13 +58,13 @@ class Comment #bfbfbf {
  + toString() : String <<override>>
 }
 
-interface Rateable <<interface>> #bfbfbf {
+interface Rateable <<interface>> {
  + addRating(rating : Rating)
  + getAverageRating() : double
  + getRatings() : Rating[]
 }
 
-class Rating #bfbfbf {
+class Rating {
  - stars : int
  - review : Comment
  + Rating(stars : int, review : Comment)
@@ -77,7 +77,7 @@ class Rating #bfbfbf {
 }
 
 package people {
-class Person #bfbfbf {
+class Person {
  # name : String
  # email : String
  - ratings : Rating[] <<ArrayList>>
@@ -94,11 +94,10 @@ class Person #bfbfbf {
  + getAverageRating() : double <<override>>
  + getRatings() : Rating[] <<override>>
 }
-class Student #bfbfbf {
+class Student {
  - {static} nextStudentID : int
  - studentID : int
  - courses : Course[] <<ArrayList>>
-' - balanceOwed : int
  + Student(name : String, email : String)
  + Student(in : Scanner)
  + save(out : PrintStream)
@@ -106,7 +105,7 @@ class Student #bfbfbf {
  + getCourses() : Course[]
  + toString() : String <<override>>
 }
-class Tutor #bfbfbf {
+class Tutor {
  - bio : String
  - ssn : int
  - course : Course
@@ -116,14 +115,11 @@ class Tutor #bfbfbf {
  + getSSN() : int
  + getBio() : String
  + getCourse() : Course
-' - expertise : Subject[]
-'  - salary : int
-'  - availability : DateRange[]
 }
 }
 
 package session{
-class Course #bfbfbf {
+class Course {
  -dept : String
  -number : int
  + Course(dept : String, number : int)
@@ -133,23 +129,20 @@ class Course #bfbfbf {
  + equals(o : Object) : boolean <<override>>
  + hashCode() : int <<override>>
 }
-class InvalidCourseException #bfbfbf {
+class InvalidCourseException {
  + InvalidCourseException(dept : String)
  + InvalidCourseException(dept : String, number : int)
 }
 
-class DateRange #bfbfbf {
+class DateRange {
  - date : String
  - startTime : String
  - endTime : String
-' - start : ZonedDateTime
-' - end : ZonedDateTime
  + DateRange(date : String, startTime : String, endTime : String)
  + DateRange(date : String, startTime : String, duration : long)
  + DateRange(in : Scanner)
  + save(out : PrintStream)
  + duration() : long <<minutes>>
-' + isWithin(date : ZonedDateTime) : boolean
  + toString() : String <<override>>
 }
 
@@ -158,28 +151,30 @@ class Session {
  - dates : DateRange
  - tutor : Tutor
  - students : Student[] <<ArrayList>>
-' - fee : int
-' - tutorWasPaid : boolean
+ - ratings : Rating[] <<ArrayList>>
  + Session(course : Course, tutor : Tutor)
  + Session(in : Scanner)
  + save(out : PrintStream)
  + setSchedule(date : String, startTime : String, duration : long)
  + addStudent(student : Student)
  + toString() : String <<override>>
+ + addRating(rating : Rating)
+ + getAverageRating() : double
+ + getRatings() : Rating[]
 }
 }
 package java.lang {
-class IllegalArgumentException #bfbfbf {
+class IllegalArgumentException {
  + IllegalArgumentException(s: String)
 }
 }
 
-class Runnable <<interface>> #bfbfbf  {
+class Runnable <<interface>> {
   +{abstract} run()
 }
 
 package menu {
-class MenuItem #bfbfbf {
+class MenuItem {
   - menuText : Object
   - menuResponse : Runnable
   + MenuItem(menuText : Object, menuResponse : Runnable)
@@ -188,7 +183,7 @@ class MenuItem #bfbfbf {
   + equals(o : Object) : boolean <<override>>
   + hashCode() : int <<override>>
 }
-class Menu #bfbfbf {
+class Menu {
   # pre : Object
   # items : MenuItem[] <<ArrayList>>
   + result : StringBuilder
@@ -221,7 +216,7 @@ class Menu #bfbfbf {
 }
 
 package mdi {
-class MavTutor #d2b55b {
+class MavTutor {
   - menu : Menu
   - view : List
   - file : File
@@ -269,30 +264,16 @@ Rating <- Rateable
 Rating --> Comment
 Comment -> Person
 
-' Student <-- Session
-' Tutor <-- Session 
 Course --o Session
 Session *-- DateRange
 
 Rateable <|.. Person
+Rateable <|.. Session
 Person <|-- Student
 Person <|-- Tutor
 Student o-- Course
 Tutor o-- Course
 Course ..> InvalidCourseException
 IllegalArgumentException <|-- InvalidCourseException
-
-Note top of MavTutor
-  Add MenuItems to review Session, Tutor, and Student.
-  Add review method for above, plus a login method.
-  print... methods are from P05's DemoRatingSystem.
-end Note
-
-Note right of Session
-  Implement Rateable here, too!
-  (Inheritance isn't shown,
-   as the line would wander
-   all through the diagram!)
-end Note
 
 @enduml
