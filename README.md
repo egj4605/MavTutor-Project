@@ -37,4 +37,4 @@ MavTutor is built using a modular architecture organized into dedicated Java pac
    cd src
 
 ## ✎ MavTutor PlantUML Project Diagram
-
+![MavTutor Class Diagram](./assets/MavTutor_PUML_Diagram.png)
